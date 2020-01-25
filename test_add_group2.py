@@ -3,7 +3,7 @@ from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
 import unittest
-from group import Group
+from model.group import Group
 
 class TestAddGroup(unittest.TestCase):
     def setUp(self):
@@ -15,7 +15,7 @@ class TestAddGroup(unittest.TestCase):
         self.open_home_page(wd)
         self.login(wd, username="admin", password="secret")
         self.open_groups_page(wd)
-        self.create_group(wd, Group (name="abc", header="123", footer="def"))
+        self.create_group(wd, Group(name="abc", header="123", footer="def"))
         self.return_to_groups_page(wd)
         self.logout(wd)
 
@@ -24,7 +24,7 @@ class TestAddGroup(unittest.TestCase):
         self.open_home_page(wd)
         self.login(wd, username="admin", password="secret")
         self.open_groups_page(wd)
-        self.create_group(wd, Group (name="", header="", footer=""))
+        self.create_group(wd, Group(name="", header="", footer=""))
         self.return_to_groups_page(wd)
         self.logout(wd)
 

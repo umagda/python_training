@@ -1,35 +1,10 @@
-# -*- coding: utf-8 -*-
-from selenium import webdriver
-from selenium.webdriver.support.ui import Select
-import unittest
-from model.contact import Contact
+class ContactHelper:
 
-class UntitledTestCase(unittest.TestCase):
-    def setUp(self):
-        self.wd = webdriver.Firefox()
-        self.wd.implicitly_wait(30)
-    
-    def test_add_new_contact(self):
-        wd = self.wd
-        self.open_home_page(wd)
-        self.login(wd, username="admin", password="secret")
-        self.add_new_contact(wd, Contact(name="Anna", middlename="Maria", lastname="Kowalska", nickname="Ania K.", title="Ms.", company="IBM",
-                             address="ul. Ogrodowa 3\n41-549 Warszawa", home="123-456-789", mobile="788-000-987", email="anna.kowalska@gmail.com",
-                             bday="13", bmonth="September", byear="1983"))
-        self.logout(wd)
+    def __init__(self, app):
+        self.app = app
 
-    def open_home_page(self, wd):
-        wd.get("http://localhost:8080/addressbook/")
-
-    def login(self, wd, username, password):
-        wd.find_element_by_name("user").click()
-        wd.find_element_by_name("user").clear()
-        wd.find_element_by_name("user").send_keys(username)
-        wd.find_element_by_name("pass").clear()
-        wd.find_element_by_name("pass").send_keys(password)
-        wd.find_element_by_xpath("//input[@value='Login']").click()
-
-    def add_new_contact(self, wd, contact):
+    def add_new(self, contact):
+        wd = self.app.wd
         # init add new contact
         wd.find_element_by_link_text("add new").click()
         # fill contact form
@@ -65,22 +40,11 @@ class UntitledTestCase(unittest.TestCase):
         wd.find_element_by_name("email").clear()
         wd.find_element_by_name("email").send_keys(contact.email)
         wd.find_element_by_name("bday").click()
-        Select(wd.find_element_by_name("bday")).select_by_visible_text(contact.bday)
         wd.find_element_by_xpath("//option[@value='13']").click()
         wd.find_element_by_name("bmonth").click()
-        Select(wd.find_element_by_name("bmonth")).select_by_visible_text(contact.bmonth)
         wd.find_element_by_xpath("//option[@value='September']").click()
         wd.find_element_by_name("byear").click()
         wd.find_element_by_name("byear").clear()
         wd.find_element_by_name("byear").send_keys(contact.byear)
         # submit
         wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
-
-    def logout(self, wd):
-        wd.find_element_by_link_text("Logout").click()
-    
-    def tearDown(self):
-        self.wd.quit()
-
-if __name__ == "__main__":
-    unittest.main()
