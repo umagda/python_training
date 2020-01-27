@@ -22,4 +22,3 @@ def test_add_empty_contact(app):
                                 address="", home="", mobile="", email="",
                                 bday="", bmonth="", byear=""))
     app.session.logout()
-    
